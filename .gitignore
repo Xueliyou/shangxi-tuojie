@@ -1,0 +1,19 @@
+# 构建产物
+build/
+*.apk
+*.aab
+*.idsig
+*.jks
+*.keystore
+
+# 编辑器 / IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# 临时文件
+*.log
+*.tmp
+*.bak
+assets/payload.bin
