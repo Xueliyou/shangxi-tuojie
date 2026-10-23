@@ -97,7 +97,12 @@ final class DownloadCenter {
             // 2) 歌词
             sink.onProgress(taskId, 1, 0, 0, 0, "获取歌词…", null, null, null);
             String lyric = "";
-            try { lyric = api.lyric(id).optString("lyric", ""); } catch (Exception ignored) {}
+            try {
+                JSONObject ly = api.lyric(id);
+                // 外语歌的翻译是单独一份 tlyric，必须合并进歌词再写进文件，
+                // 否则下载下来的 mp3/flac 里只有原文，播放器看不到中文翻译。
+                lyric = TagWriter.mergeTranslation(ly.optString("lyric", ""), ly.optString("tlyric", ""));
+            } catch (Exception ignored) {}
 
             // 3) 封面（缩到 500x500，避免嵌入大图把文件撑爆）
             byte[] cover = null;

@@ -15,8 +15,8 @@ PROJ="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJ"
 
 # ---------------- 元信息 ----------------
-APP_VER_CODE=117
-APP_VER_NAME="1.10.6"
+APP_VER_CODE=201
+APP_VER_NAME="2.0.1"
 MIN_SDK=21
 TARGET_SDK=33
 APP_NAME="熵析拓解"

@@ -184,6 +184,85 @@ public final class TagWriter {
         return sb.toString();
     }
 
+    /**
+     * 把翻译歌词（网易云的 tlyric）合并进原文：每一行原文后面补一行同时间戳的译文。
+     *
+     * <p>网易云把原文和翻译分成两份 LRC 返回，下载时如果只写原文，外语歌的翻译就丢了。
+     * 合并后的格式是标准的「多行同时间戳」，几乎所有播放器都能显示：
+     * <pre>
+     * [00:12.34]I love you
+     * [00:12.34]我爱你
+     * </pre>
+     *
+     * @param lrc    原文歌词（LRC）
+     * @param tlyric 译文歌词（LRC），为空就直接返回原文
+     * @return 合并后的 LRC；没有可用翻译时原样返回
+     */
+    public static String mergeTranslation(String lrc, String tlyric) {
+        if (lrc == null) lrc = "";
+        if (tlyric == null) tlyric = "";
+        if (lrc.trim().isEmpty() || tlyric.trim().isEmpty()) return lrc;
+
+        String a = normalizeLrc(lrc);
+        String b = normalizeLrc(tlyric);
+        if (a.trim().equals(b.trim())) return lrc;   // 有些歌「翻译」就是原文，别重复写
+
+        java.util.HashMap<Long, String> tr = new java.util.HashMap<Long, String>();
+        for (String raw : b.split("\n")) {
+            String line = raw.trim();
+            if (line.length() < 7 || line.charAt(0) != '[') continue;
+            int close = line.indexOf(']');
+            if (close <= 1) continue;
+            Long ms = stampMs(line.substring(1, close));
+            if (ms == null) continue;
+            String text = line.substring(close + 1).trim();
+            if (text.isEmpty()) continue;
+            if (text.startsWith("//")) continue;      // 纯音乐占位
+            if (!tr.containsKey(ms)) tr.put(ms, text);
+        }
+        if (tr.isEmpty()) return lrc;
+
+        StringBuilder sb = new StringBuilder(lrc.length() + tlyric.length() + 64);
+        for (String raw : a.split("\n")) {
+            String line = raw.trim();
+            if (line.isEmpty()) continue;
+            sb.append(line).append('\n');
+            if (line.length() < 7 || line.charAt(0) != '[') continue;
+            int close = line.indexOf(']');
+            if (close <= 1) continue;
+            Long ms = stampMs(line.substring(1, close));
+            if (ms == null) continue;
+            String text = tr.get(ms);
+            if (text == null) continue;
+            sb.append(line, 0, close + 1).append(text).append('\n');
+        }
+        return sb.toString();
+    }
+
+    /** [mm:ss.xx] / [mm:ss.xxx] / [mm:ss] → 毫秒；不是时间戳返回 null */
+    private static Long stampMs(String ts) {
+        try {
+            int c = ts.indexOf(':');
+            if (c <= 0) return null;
+            long mm = Long.parseLong(ts.substring(0, c).trim());
+            String rest = ts.substring(c + 1);
+            int d = rest.indexOf('.');
+            int d2 = rest.indexOf(':');
+            if (d2 >= 0 && (d < 0 || d2 < d)) d = d2;
+            String ss = d < 0 ? rest : rest.substring(0, d);
+            long ms = 0;
+            if (d >= 0) {
+                String frac = rest.substring(d + 1);
+                if (frac.length() > 3) frac = frac.substring(0, 3);
+                while (frac.length() < 3) frac = frac + "0";
+                ms = Long.parseLong(frac);
+            }
+            return mm * 60000L + Long.parseLong(ss.trim()) * 1000L + ms;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     /** 统一入口：规范化 + 必要时估算时间轴 */
     private static String prepareLyric(String raw, long durationMs) {
         String lrc = normalizeLrc(sanitizeLrc(raw));

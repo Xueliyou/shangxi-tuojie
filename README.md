@@ -45,6 +45,7 @@
   - MP3（ID3v2.3）：`TIT2` / `TPE1` / `TALB` / `TRCK` / `APIC` / `USLT` / `TXXX:LYRICS` / **`SYLT`（逐行同步歌词）**
   - 无时间轴的歌词写 `TXXX:UNSYNCEDLYRICS`（纯文本）
   - FLAC：Vorbis Comment + `PICTURE`，歌词写 `LYRICS=` / `LYRIC=` / `UNSYNCEDLYRICS=`
+- **中文翻译**：外语歌下载时自动把网易云的 `tlyric` 合并进歌词（原文一行、译文一行，同一时间戳），内嵌歌词和 `.lrc` 都带翻译
 - **外挂歌词 `.lrc`**：与音频同名的 `.lrc` 写到 `Music/<子目录>/`
   - Android 11+ 需要「所有文件访问」权限才能直写；未授权时自动回退 MediaStore
 - 下载进度、失败原因、取消，都走统一的任务面板
@@ -192,6 +193,16 @@ A：界面是 WebView，逻辑全在 `index.html` 里，原生层只做桥接；
 A：取决于账号权限。普通账号一般是 320K，黑胶 VIP 才有无损 / Hi-Res。
 
 ---
+
+## 更新日志
+
+### v2.0.1（2026-10-23）
+- 修复：下载的外语歌没有中文翻译。下载时会一并取网易云的 `tlyric`，按时间戳合并进歌词，
+  内嵌歌词（USLT / SYLT / FLAC `LYRICS=`）和同名 `.lrc` 现在都包含译文。
+
+### v1.10.6
+- 移除右下角「椒盐音乐」悬浮按钮及其未安装弹窗
+- 公开版本不再内置任何账号 Cookie
 
 ## 免责声明
 
