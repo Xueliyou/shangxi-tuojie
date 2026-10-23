@@ -106,6 +106,17 @@
 
 ---
 
+## Windows 桌面版
+
+同一套界面 + Node 原生桥的 Electron 移植，和 Android 版功能对齐：
+
+- 安装包（Windows 10 / 11 x64）：见 [Releases](../../releases) 里的 `ShangxiTuojie-Setup-*.exe`
+- 默认安装到 `%LOCALAPPDATA%\Programs\ShangxiTuojie`，可在「应用和功能」里正常卸载
+- 下载保存到 `%USERPROFILE%\Music\<子目录>`，同名 `.lrc` 在旁边
+- 首次打开没有登录态，请**扫码登录**（不要用验证码）
+
+> Windows 版是桌面移植：通知栏/媒体键由窗口内控制替代，暂未做系统托盘和开机自启。
+
 ## 从源码构建
 
 ### 环境要求
@@ -197,6 +208,7 @@ A：取决于账号权限。普通账号一般是 320K，黑胶 VIP 才有无损
 ## 更新日志
 
 ### v2.0.1（2026-10-23）
+- 新增 **Windows 桌面版**（Electron 移植，UI 与 Android 一致，支持扫码登录 / 播放 / 下载写标签 / 同步歌词）
 - 修复：下载的外语歌没有中文翻译。下载时会一并取网易云的 `tlyric`，按时间戳合并进歌词，
   内嵌歌词（USLT / SYLT / FLAC `LYRICS=`）和同名 `.lrc` 现在都包含译文。
 
