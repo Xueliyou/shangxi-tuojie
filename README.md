@@ -112,6 +112,7 @@
 
 - 安装包（Windows 10 / 11 x64）：见 [Releases](../../releases) 里的 `ShangxiTuojie-Setup-*.exe`
 - 默认安装到 `%LOCALAPPDATA%\Programs\ShangxiTuojie`，可在「应用和功能」里正常卸载
+- 源码与构建方法：[windows/README.md](windows/README.md)
 - 下载保存到 `%USERPROFILE%\Music\<子目录>`，同名 `.lrc` 在旁边
 - 首次打开没有登录态，请**扫码登录**（不要用验证码）
 
