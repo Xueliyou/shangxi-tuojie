@@ -106,17 +106,13 @@
 
 ---
 
-## Windows 桌面版
+## 电脑版（Windows）
 
-同一套界面 + Node 原生桥的 Electron 移植，和 Android 版功能对齐：
+电脑版已经**独立成仓库**：[Xueliyou/shangxi-tuojie-desktop](https://github.com/Xueliyou/shangxi-tuojie-desktop)
 
-- 安装包（Windows 10 / 11 x64）：见 [Releases](../../releases) 里的 `ShangxiTuojie-Setup-*.exe`
-- 默认安装到 `%LOCALAPPDATA%\Programs\ShangxiTuojie`，可在「应用和功能」里正常卸载
-- 源码与构建方法：[windows/README.md](windows/README.md)
-- 下载保存到 `%USERPROFILE%\Music\<子目录>`，同名 `.lrc` 在旁边
-- 首次打开没有登录态，请**扫码登录**（不要用验证码）
-
-> Windows 版是桌面移植：通知栏/媒体键由窗口内控制替代，暂未做系统托盘和开机自启。
+- 无边框桌面界面（侧边栏 / 播放条 / 歌词侧栏）
+- 扫码登录、搜索、歌单 / 专辑 / 榜单、下载写标签与翻译歌词
+- Windows 10 / 11 x64 安装包在电脑版仓库的 Releases 里
 
 ## 从源码构建
 
